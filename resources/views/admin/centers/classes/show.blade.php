@@ -51,7 +51,11 @@
 
               <div class="row mt-3">
                 <div class="col-lg-2 col-md-4 label ">Môn</div>
-                <div class="col-lg-10 col-md-8">{{ $class->subject->name }}</div>
+                <div class="col-lg-10 col-md-8">
+                  @foreach ($class->subjects as $item)
+                    {{ $item->name . ', ' }}
+                  @endforeach
+                </div>
               </div>
 
               <div class="row mt-3">
@@ -120,7 +124,8 @@
 
               <div class="row mt-3">
                 <div class="col-lg-2 col-md-4 label ">Nguồn</div>
-                <div class="col-lg-10 col-md-8"><a href="{{ $class->source_link }}" target="_blank">{{ $class->source_link }}</a></div>
+                <div class="col-lg-10 col-md-8"><a href="{{ $class->source_link }}"
+                    target="_blank">{{ $class->source_link }}</a></div>
               </div>
 
               <div class="row mt-3">

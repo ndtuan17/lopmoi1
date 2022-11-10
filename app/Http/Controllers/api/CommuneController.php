@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Commune;
+use App\Models\District;
 use Illuminate\Http\Request;
 
 class CommuneController extends Controller
 {
-    function apiGet(Request $request)
+    function districts_index(District $district, Request $request)
     {
         if ($request->ajax()) {
-            $communes = Commune::where('district_id', $request->district_id)->select('id', 'name')->get();
+            $communes = $district->communes;
             return response()->json($communes);
         }
     }

@@ -40,7 +40,7 @@
                     <tr>
                       <td scope="row">{{ $class->code ?? 'unknow' }}</td>
                       <td>
-                        {{ $class->subject->name . ' - ' . $class->grade->name . ' - ' . $class->commune->name . ', ' . $class->commune->district->name }}
+                        {{ $class->grade->name . ' - ' . $class->commune->name . ', ' . $class->commune->district->name }}
                       </td>
                       <td>
                         <a href="{{ route('admin.centers.classes.show', [$center, $class]) }}" class="btn btn-primary">Chi
@@ -84,6 +84,7 @@
           dangerMode: true,
         }).then(will => {
           if (will) {
+            console.log('delete');
             form.submit();
           }
         })

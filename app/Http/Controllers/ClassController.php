@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin\centers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Center;
@@ -17,12 +17,13 @@ use Illuminate\Http\Request;
 
 class ClassController extends Controller
 {
-    public function index(Center $center)
+    public function admin_centers_index(Center $center)
     {
         $classes = $center->classes;
         return view('admin.centers.classes.index', compact('center', 'classes'));
     }
-    public function create(Center $center)
+
+    public function admin_centers_create(Center $center)
     {
         $subjects = Subject::all();
         $grades = Grade::all();
@@ -41,11 +42,13 @@ class ClassController extends Controller
             'tutor_types',
             'tutor_genders'
         ));
-    }
-    public function store(Request $request, Center $center)
+    } //done
+
+    public function admin_centers_store(Request $request, Center $center)
     {
+        $subjects = Subject::findMany($request->subject_ids);
         $request->validate([
-            'subject_id' => 'required|integer',
+            'subject_ids' => 'required',
             'grade_id' => 'required|integer',
             'student_gender_id' => 'required|integer',
             'student_level_id' => 'required|integer',
@@ -60,24 +63,40 @@ class ClassController extends Controller
         $request->merge(['center_id' => $center->id]);
         $class = new MClass($request->all());
         $class->save();
+        $class->subjects()->saveMany($subjects);
+
         return redirect()->route('admin.centers.classes.index', $center)->with('message', 'create class successfully');
-    }
-    public function show(Center $center, MClass $class)
+    } //done
+
+    public function admin_centers_show(Center $center, $idClass)
     {
+        $class = MClass::findOrFail($idClass);
         return view('admin.centers.classes.show', compact('center', 'class'));
-    }
-    public function edit($id)
+    } //done
+
+    public function admin_centers_edit($id)
     {
         //
     }
-    public function update(Request $request, $id)
+
+    public function admin_centers_update(Request $request, $id)
     {
         //
     }
-    public function destroy(Center $center, MClass $class, Request $request)
+
+    public function admin_centers_destroy(Center $center, $idClass, Request $request)
     {
-        // dd($request, $class);
+        $class = MClass::findOrFail($idClass);
+
         $class->delete();
         return redirect()->route('admin.centers.classes.index', $center)->with('message', 'delete class successfully');
+    } //done
+
+    function index()
+    {
+    }
+
+    function show($classId)
+    {
     }
 }

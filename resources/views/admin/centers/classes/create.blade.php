@@ -31,8 +31,7 @@
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Môn học</label>
                   <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example" name="subject_id">
-                      <option value="">Chọn môn</option>
+                    <select class="form-select" name="subject_ids[]" multiple>
                       @foreach ($subjects as $subject)
                         <option value="{{ $subject->id }}" {{ old('subject_id') == $subject->id ? 'selected' : '' }}>
                           {{ $subject->name }}</option>
@@ -264,17 +263,18 @@
   </main><!-- End #main -->
 
   <script>
-    var url = "{{ url('/showCommunesInDistrict') }}";
     $("select[name='district_id']").change(function() {
       var district_id = $(this).val();
-      var token = $("input[name='_token']").val();
+      var url = "{{ route('api.districts.communes.index', ':district_id') }}"
+      url = url.replace(':district_id', district_id);
+      // var token = $("input[name='_token']").val();
       $.ajax({
         url: url,
         method: 'POST',
-        data: {
-          district_id: district_id,
-          _token: token
-        },
+        // data: {
+        //   // district_id: district_id,
+        //   // _token: token
+        // },
         success: function(data) {
           $("select[name='commune_id']").html('');
           $.each(data, function(key, value) {

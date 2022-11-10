@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
@@ -11,16 +11,19 @@ use Illuminate\Support\Facades\Storage;
 
 class CenterController extends Controller
 {
-    public function index()
+
+    public function admin_index()
     {
         $centers = Center::all();
         return view('admin.centers.index', compact('centers'));
     }
-    public function create()
+
+    public function admin_create()
     {
         return view('admin.centers.create');
     }
-    public function store(Request $request)
+
+    public function admin_store(Request $request)
     {
         $request->validate([
             'name' => 'required|string',
@@ -41,15 +44,18 @@ class CenterController extends Controller
         $center->save();
         return redirect()->route('admin.centers.index')->with('message', 'create center success');
     }
-    public function show(Center $center)
+
+    public function admin_show(Center $center)
     {
         return redirect()->route('admin.centers.index');
     }
-    public function edit(Center $center)
+
+    public function admin_edit(Center $center)
     {
         return view('admin.centers.edit', compact('center'));
     }
-    public function update(Request $request, Center $center)
+
+    public function admin_update(Request $request, Center $center)
     {
         $request->validate([
             'name' => 'string|nullable',
@@ -72,7 +78,7 @@ class CenterController extends Controller
         ]);
         return redirect()->route('admin.centers.index')->with('message', 'update successfully!');
     }
-    public function destroy(Center $center)
+    public function admin_destroy(Center $center)
     {
         File::delete($center->avatar_path);
         $center->delete();

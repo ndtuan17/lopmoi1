@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use function PHPUnit\Framework\returnSelf;
+
 class MClass extends Model
 {
     use HasFactory;
@@ -21,9 +23,14 @@ class MClass extends Model
         return $this->belongsTo(Center::class);
     }
 
-    function subject()
+    function subjects()
     {
-        return $this->belongsTo(Subject::class);
+        return $this->belongsToMany(Subject::class, 'classes_subjects', 'class_id', 'subject_id');
+    }
+
+    function subject_ids()
+    {
+        return $this->hasMany(ClassSubject::class, 'class_id');
     }
 
     function grade()
